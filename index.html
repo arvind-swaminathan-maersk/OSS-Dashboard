@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>OSS Coaching Heatmap</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f4f6f9;color:#2c3e50}
+.disc{background:#fff3cd;border-bottom:2px solid #ffc107;padding:10px 28px;display:flex;align-items:center;gap:10px;font-size:.85em;color:#856404;flex-wrap:wrap}
+.disc a{color:#0d6efd;text-decoration:none;font-weight:600}.disc a:hover{text-decoration:underline}
+.hdr{background:linear-gradient(135deg,#1a2a6c,#2d4373);color:#fff;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.hdr-left{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.hdr h1{font-size:1.45em;line-height:1.4;font-weight:700}
+.how-link{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;padding:7px 14px;border-radius:6px;font-size:.82em;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .2s}
+.how-link:hover{background:rgba(255,255,255,.28)}
+.hdr .sub{font-size:.82em;opacity:.85;margin-top:3px}
+.fb{background:#fff;padding:12px 28px;border-bottom:2px solid #e0e6ed;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.fb label{font-weight:600;font-size:.92em}.fb select{padding:7px 14px;border:2px solid #3498db;border-radius:6px;font-size:.92em;min-width:220px;cursor:pointer}
+.ct{max-width:1440px;margin:0 auto;padding:18px 22px}
+.kr{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:20px}
+.kc{background:#fff;border-radius:9px;padding:18px;text-align:center;box-shadow:0 2px 7px rgba(0,0,0,.07);border-left:4px solid #3498db}
+.kc.w{border-left-color:#e74c3c}.kc.s{border-left-color:#27ae60}.kc.i{border-left-color:#f39c12}
+.kv{font-size:1.8em;font-weight:700;color:#1a2a6c}.kl{font-size:.78em;color:#7f8c8d;margin-top:3px;text-transform:uppercase;letter-spacing:.4px}
+.sec{background:#fff;border-radius:9px;padding:22px;margin-bottom:20px;box-shadow:0 2px 7px rgba(0,0,0,.07)}
+.sec h2{font-size:1.15em;color:#1a2a6c;margin-bottom:14px;padding-bottom:7px;border-bottom:2px solid #ecf0f1}
+.ht{width:100%;border-collapse:separate;border-spacing:2px;font-size:.82em}
+.ht th{background:#1a2a6c;color:#fff;padding:9px 7px;text-align:center;font-weight:600;cursor:help}
+.ht th.wc{text-align:left;min-width:170px}.ht td{padding:7px 5px;text-align:center;border-radius:3px;font-weight:500;transition:transform .12s;cursor:pointer}
+.ht td:hover{transform:scale(1.06);box-shadow:0 2px 10px rgba(0,0,0,.18)}
+.ht td.ws{text-align:left;background:#f8f9fa!important;font-weight:600;color:#2c3e50;cursor:default}
+.ht .cc{font-size:1.05em;font-weight:700}.ht .cp{font-size:.72em;opacity:.8;display:block}
+.ht tr.ar td{border-top:3px solid #1a2a6c;font-weight:700}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}@media(max-width:900px){.g2{grid-template-columns:1fr}}
+.et{width:100%;font-size:.82em;border-collapse:collapse}.et th{text-align:left;padding:5px 7px;border-bottom:2px solid #ecf0f1;color:#7f8c8d;font-weight:600}
+.et td{padding:5px 7px;border-bottom:1px solid #f0f0f0}
+.ft2{width:100%;font-size:.82em;border-collapse:collapse}
+.ft2 th{background:#1a2a6c;color:#fff;padding:10px 10px;text-align:left;font-weight:600}
+.ft2 td{padding:10px;border-bottom:1px solid #ecf0f1;vertical-align:top}
+.ft2 tr:nth-child(even){background:#f8f9fa}
+.ft2 .fi{font-size:1.3em;text-align:center}.ft2 .fc{font-weight:700;color:#1a2a6c}
+.ft2 .fdo{color:#27ae60}.ft2 .fav{color:#e74c3c}
+.ft2 .fstat{text-align:center;font-weight:700;font-size:1.1em}
+.ft2 .fstatp{font-size:.78em;color:#7f8c8d;font-weight:400}
+.cb{background:linear-gradient(135deg,#fef9e7,#fdebd0);border-left:4px solid #f39c12;padding:14px 18px;border-radius:7px;margin-top:10px;line-height:1.65}
+.cb strong{color:#d35400}
+.ft{text-align:center;padding:14px;color:#95a5a6;font-size:.78em;margin-top:18px}
+.tt{display:none;position:absolute;background:#2c3e50;color:#fff;padding:11px 14px;border-radius:7px;font-size:.8em;max-width:340px;z-index:1000;line-height:1.45;box-shadow:0 4px 14px rgba(0,0,0,.28);text-align:left}
+/* DONUT */
+.donut-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.donut-legend{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center}
+.donut-legend-item{display:flex;align-items:center;gap:6px;font-size:.85em}
+.donut-legend-dot{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+/* MODAL */
+.modal-bg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.55);z-index:2000;justify-content:center;align-items:center}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:12px;max-width:720px;width:92%;max-height:85vh;overflow-y:auto;padding:30px 34px;box-shadow:0 8px 40px rgba(0,0,0,.3);position:relative}
+.modal h2{color:#1a2a6c;margin-bottom:14px;font-size:1.3em}.modal h3{color:#2d4373;margin:16px 0 8px;font-size:1.05em}
+.modal p,.modal li{font-size:.92em;line-height:1.7;color:#34495e}.modal ul{margin-left:20px;margin-bottom:10px}
+.modal .close-btn{position:absolute;top:14px;right:18px;background:none;border:none;font-size:1.5em;cursor:pointer;color:#95a5a6}.modal .close-btn:hover{color:#e74c3c}
+.modal .step{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;padding:10px 12px;background:#f8f9fa;border-radius:7px}
+.modal .step-num{background:#1a2a6c;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85em;flex-shrink:0}
+.modal .step-txt{flex:1}
+</style></head><body>
+
+<!-- DISCLAIMER -->
+<div class="disc">⚠️ <strong>Disclaimer:</strong> This analysis has been generated using AI tools. For any clarification, please contact <a href="mailto:arvind.swaminathan@maersk.com">arvind.swaminathan@maersk.com</a></div>
+
+<!-- HEADER -->
+<div class="hdr">
+<div class="hdr-left">
+<a class="how-link" onclick="document.getElementById('helpModal').classList.add('show')">📖 How to use this dashboard</a>
+<div>
+<h1>📊 OSS Incident Coaching Heatmap &amp; Feedback Guide</h1>
+<div class="sub">Navigate Metrics → Identify Opportunities → Take Action | 718 cases analysed during period: 06 Feb 2025 – 15 Apr 2026</div>
+</div>
+</div>
+<div style="text-align:right;font-size:.78em;opacity:.8">Generated: 18 May 2026 12:05</div>
+</div>
+
+<!-- HOW-TO MODAL -->
+<div class="modal-bg" id="helpModal" onclick="if(event.target===this)this.classList.remove('show')">
+<div class="modal">
+<button class="close-btn" onclick="document.getElementById('helpModal').classList.remove('show')">&times;</button>
+<h2>📖 How to Use This Dashboard</h2>
+<p>This interactive coaching heatmap helps you identify improvement opportunities in OSS incident management across workstreams. Follow these steps:</p>
+<h3>🔄 Step-by-Step Workflow</h3>
+<div class="step"><div class="step-num">1</div><div class="step-txt"><strong>Select your Workstream</strong><br>Use the dropdown filter below the header. Choose "All Workstreams" for the full portfolio view, or pick a specific workstream to drill in.</div></div>
+<div class="step"><div class="step-num">2</div><div class="step-txt"><strong>Review the KPI Cards</strong><br>The summary cards at the top update instantly — showing total cases, coaching flags raised, percentage flagged, and average response times.</div></div>
+<div class="step"><div class="step-num">3</div><div class="step-txt"><strong>Scan the Coaching Heatmap</strong><br>Each cell shows a count and percentage. <strong>Darker red = higher proportion = bigger coaching opportunity.</strong> White/light cells are healthy.</div></div>
+<div class="step"><div class="step-num">4</div><div class="step-txt"><strong>Click any Heatmap Cell</strong><br>A tooltip appears with specific <strong>DO / AVOID</strong> coaching advice for that flag and workstream.</div></div>
+<div class="step"><div class="step-num">5</div><div class="step-txt"><strong>Review the Coaching Flags Table</strong><br>The "What They Mean" table shows each flag's definition, what to do, what to avoid, and the <strong>live count/percentage for your selected workstream</strong>.</div></div>
+<div class="step"><div class="step-num">6</div><div class="step-txt"><strong>Check Error Categories &amp; Priority Mix</strong><br>Understand the root cause distribution and whether priority levels are being used correctly via the donut chart.</div></div>
+<div class="step"><div class="step-num">7</div><div class="step-txt"><strong>Read the Coaching Summary</strong><br>The bottom section auto-generates your top 2 priorities with specific, actionable advice.</div></div>
+<h3>💡 Tips</h3>
+<ul>
+<li>Use this dashboard in <strong>team retrospectives</strong> — project the heatmap and discuss the darkest cells together.</li>
+<li>Track progress by comparing flag percentages <strong>month over month</strong>.</li>
+<li>Share the direct URL with team leads — no Copilot licence is required.</li>
+<li>Click column headers in the heatmap for a quick reminder of what each flag means.</li>
+</ul>
+</div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="fb"><label>🔍 Workstream:</label><select id="wf" onchange="go()"><option value="All Workstreams">All Workstreams</option><option value="Tax & E-Invoicing">Tax & E-Invoicing</option><option value="PTP + OpenText">PTP + OpenText</option><option value="Basis">Basis</option><option value="ATR + RAR">ATR + RAR</option><option value="ABAP">ABAP</option><option value="Reporting & Analytics (BW)">Reporting & Analytics (BW)</option><option value="Cash/Treasury">Cash/Treasury</option><option value="Integration">Integration</option><option value="GRC">GRC</option><option value="MDG">MDG</option><option value="OTC">OTC</option><option value="EAM">EAM</option><option value="Others">Others</option></select>
+<span id="fi" style="font-size:.82em;color:#7f8c8d"></span></div>
+
+<!-- CONTENT -->
+<div class="ct">
+<div class="kr" id="kr"></div>
+
+<div class="sec"><h2>🌡️ Coaching Heatmap — Flag Intensity by Workstream</h2>
+<p style="font-size:.8em;color:#7f8c8d;margin-bottom:10px">Cells show <b>count</b> &amp; <b>%</b>. Darker red = higher proportion = bigger opportunity. <b>Click any cell</b> for coaching advice.</p>
+<div style="overflow-x:auto"><table class="ht" id="hm"></table></div></div>
+
+<div class="sec"><h2>🚩 Coaching Flags — What They Mean</h2>
+<p style="font-size:.8em;color:#7f8c8d;margin-bottom:12px">Each flag identifies a specific coaching opportunity. The count and % columns update based on your selected workstream.</p>
+<div style="overflow-x:auto"><table class="ft2" id="flagTable"></table></div></div>
+
+<div class="g2"><div class="sec"><h2>📋 Error Category Breakdown</h2><table class="et" id="et"></table></div>
+<div class="sec"><h2>🎖️ Priority Distribution</h2><div id="pd"></div></div></div>
+
+<div class="sec"><h2>💡 Actionable Coaching Summary</h2><div id="cs"></div></div>
+</div>
+
+<div class="ft">OSS Coaching Heatmap &amp; Feedback Guide &middot; Finance &amp; Tax Technology Programme</div>
+<div class="tt" id="tp"></div>
+
+<script>
+const D=[{"total_cases": 718, "Flag_HowToOrConsulting_count": 238, "Flag_HowToOrConsulting_pct": 33.1, "Flag_PriorityInflation_count": 143, "Flag_PriorityInflation_pct": 19.9, "Flag_CustomerDelay_count": 553, "Flag_CustomerDelay_pct": 77.0, "Flag_ComponentMismatch_count": 241, "Flag_ComponentMismatch_pct": 33.6, "Flag_Reopened_count": 145, "Flag_Reopened_pct": 20.2, "Flag_AutoConfirmed_count": 515, "Flag_AutoConfirmed_pct": 71.7, "total_coaching": 1320, "cases_with_flags": 680, "pct_with_flags": 94.7, "avg_days_customer": 28.8, "avg_days_sap": 9.6, "avg_days_total": 38.4, "pri_Very_High": 18, "pri_High": 414, "pri_Medium": 243, "pri_Low": 43, "error_cats": {"Customer / Partner Issue": 403, "3rd Party Product Issue": 103, "SAP Product Issue": 98, "Others": 70, "Not Specified": 21, "Database inconsistency": 10, "Service Request": 6, "SAP documentation Issue": 6, "Cloud Infrastructure": 1}, "top_flag": "Customer Delay", "top_flag_pct": 77.0, "top_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "second_flag": "Auto-Confirmed", "second_flag_pct": 71.7, "second_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "Workstream": "All Workstreams"}, {"total_cases": 146, "Flag_HowToOrConsulting_count": 71, "Flag_HowToOrConsulting_pct": 48.6, "Flag_PriorityInflation_count": 72, "Flag_PriorityInflation_pct": 49.3, "Flag_CustomerDelay_count": 96, "Flag_CustomerDelay_pct": 65.8, "Flag_ComponentMismatch_count": 47, "Flag_ComponentMismatch_pct": 32.2, "Flag_Reopened_count": 38, "Flag_Reopened_pct": 26.0, "Flag_AutoConfirmed_count": 79, "Flag_AutoConfirmed_pct": 54.1, "total_coaching": 324, "cases_with_flags": 144, "pct_with_flags": 98.6, "avg_days_customer": 21.5, "avg_days_sap": 10.0, "avg_days_total": 31.5, "pri_Very_High": 6, "pri_High": 98, "pri_Medium": 37, "pri_Low": 5, "error_cats": {"Customer / Partner Issue": 97, "SAP Product Issue": 23, "Others": 15, "SAP documentation Issue": 4, "3rd Party Product Issue": 3, "Not Specified": 2, "Database inconsistency": 1, "Service Request": 1}, "top_flag": "Customer Delay", "top_flag_pct": 65.8, "top_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "second_flag": "Auto-Confirmed", "second_flag_pct": 54.1, "second_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "Workstream": "Tax & E-Invoicing"}, {"total_cases": 115, "Flag_HowToOrConsulting_count": 9, "Flag_HowToOrConsulting_pct": 7.8, "Flag_PriorityInflation_count": 7, "Flag_PriorityInflation_pct": 6.1, "Flag_CustomerDelay_count": 104, "Flag_CustomerDelay_pct": 90.4, "Flag_ComponentMismatch_count": 17, "Flag_ComponentMismatch_pct": 14.8, "Flag_Reopened_count": 7, "Flag_Reopened_pct": 6.1, "Flag_AutoConfirmed_count": 82, "Flag_AutoConfirmed_pct": 71.3, "total_coaching": 144, "cases_with_flags": 108, "pct_with_flags": 93.9, "avg_days_customer": 28.4, "avg_days_sap": 2.9, "avg_days_total": 31.3, "pri_Very_High": 1, "pri_High": 67, "pri_Medium": 47, "pri_Low": 0, "error_cats": {"3rd Party Product Issue": 90, "Customer / Partner Issue": 18, "Not Specified": 2, "Others": 2, "Database inconsistency": 2, "SAP Product Issue": 1}, "top_flag": "Customer Delay", "top_flag_pct": 90.4, "top_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "second_flag": "Auto-Confirmed", "second_flag_pct": 71.3, "second_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "Workstream": "PTP + OpenText"}, {"total_cases": 110, "Flag_HowToOrConsulting_count": 35, "Flag_HowToOrConsulting_pct": 31.8, "Flag_PriorityInflation_count": 11, "Flag_PriorityInflation_pct": 10.0, "Flag_CustomerDelay_count": 89, "Flag_CustomerDelay_pct": 80.9, "Flag_ComponentMismatch_count": 50, "Flag_ComponentMismatch_pct": 45.5, "Flag_Reopened_count": 27, "Flag_Reopened_pct": 24.5, "Flag_AutoConfirmed_count": 86, "Flag_AutoConfirmed_pct": 78.2, "total_coaching": 212, "cases_with_flags": 106, "pct_with_flags": 96.4, "avg_days_customer": 32.1, "avg_days_sap": 9.8, "avg_days_total": 41.9, "pri_Very_High": 4, "pri_High": 54, "pri_Medium": 43, "pri_Low": 9, "error_cats": {"Customer / Partner Issue": 75, "SAP Product Issue": 13, "Others": 8, "3rd Party Product Issue": 6, "Not Specified": 4, "Service Request": 3, "SAP documentation Issue": 1}, "top_flag": "Customer Delay", "top_flag_pct": 80.9, "top_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "second_flag": "Auto-Confirmed", "second_flag_pct": 78.2, "second_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "Workstream": "Basis"}, {"total_cases": 64, "Flag_HowToOrConsulting_count": 26, "Flag_HowToOrConsulting_pct": 40.6, "Flag_PriorityInflation_count": 8, "Flag_PriorityInflation_pct": 12.5, "Flag_CustomerDelay_count": 56, "Flag_CustomerDelay_pct": 87.5, "Flag_ComponentMismatch_count": 21, "Flag_ComponentMismatch_pct": 32.8, "Flag_Reopened_count": 8, "Flag_Reopened_pct": 12.5, "Flag_AutoConfirmed_count": 56, "Flag_AutoConfirmed_pct": 87.5, "total_coaching": 119, "cases_with_flags": 62, "pct_with_flags": 96.9, "avg_days_customer": 26.2, "avg_days_sap": 5.6, "avg_days_total": 31.8, "pri_Very_High": 2, "pri_High": 39, "pri_Medium": 20, "pri_Low": 3, "error_cats": {"Customer / Partner Issue": 39, "Others": 8, "Database inconsistency": 7, "SAP Product Issue": 6, "Not Specified": 4}, "top_flag": "Customer Delay", "top_flag_pct": 87.5, "top_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "second_flag": "Auto-Confirmed", "second_flag_pct": 87.5, "second_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "Workstream": "ATR + RAR"}, {"total_cases": 54, "Flag_HowToOrConsulting_count": 26, "Flag_HowToOrConsulting_pct": 48.1, "Flag_PriorityInflation_count": 18, "Flag_PriorityInflation_pct": 33.3, "Flag_CustomerDelay_count": 43, "Flag_CustomerDelay_pct": 79.6, "Flag_ComponentMismatch_count": 24, "Flag_ComponentMismatch_pct": 44.4, "Flag_Reopened_count": 13, "Flag_Reopened_pct": 24.1, "Flag_AutoConfirmed_count": 38, "Flag_AutoConfirmed_pct": 70.4, "total_coaching": 124, "cases_with_flags": 52, "pct_with_flags": 96.3, "avg_days_customer": 24.3, "avg_days_sap": 5.7, "avg_days_total": 30.0, "pri_Very_High": 1, "pri_High": 30, "pri_Medium": 20, "pri_Low": 3, "error_cats": {"Customer / Partner Issue": 36, "SAP Product Issue": 9, "Others": 4, "3rd Party Product Issue": 2, "Not Specified": 2, "Service Request": 1}, "top_flag": "Customer Delay", "top_flag_pct": 79.6, "top_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "second_flag": "Auto-Confirmed", "second_flag_pct": 70.4, "second_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "Workstream": "ABAP"}, {"total_cases": 47, "Flag_HowToOrConsulting_count": 11, "Flag_HowToOrConsulting_pct": 23.4, "Flag_PriorityInflation_count": 9, "Flag_PriorityInflation_pct": 19.1, "Flag_CustomerDelay_count": 29, "Flag_CustomerDelay_pct": 61.7, "Flag_ComponentMismatch_count": 18, "Flag_ComponentMismatch_pct": 38.3, "Flag_Reopened_count": 11, "Flag_Reopened_pct": 23.4, "Flag_AutoConfirmed_count": 30, "Flag_AutoConfirmed_pct": 63.8, "total_coaching": 78, "cases_with_flags": 41, "pct_with_flags": 87.2, "avg_days_customer": 27.3, "avg_days_sap": 12.9, "avg_days_total": 40.3, "pri_Very_High": 1, "pri_High": 25, "pri_Medium": 14, "pri_Low": 7, "error_cats": {"Customer / Partner Issue": 21, "SAP Product Issue": 15, "Others": 7, "Not Specified": 2, "3rd Party Product Issue": 1, "Cloud Infrastructure": 1}, "top_flag": "Auto-Confirmed", "top_flag_pct": 63.8, "top_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "second_flag": "Customer Delay", "second_flag_pct": 61.7, "second_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "Workstream": "Reporting & Analytics (BW)"}, {"total_cases": 46, "Flag_HowToOrConsulting_count": 9, "Flag_HowToOrConsulting_pct": 19.6, "Flag_PriorityInflation_count": 6, "Flag_PriorityInflation_pct": 13.0, "Flag_CustomerDelay_count": 24, "Flag_CustomerDelay_pct": 52.2, "Flag_ComponentMismatch_count": 18, "Flag_ComponentMismatch_pct": 39.1, "Flag_Reopened_count": 18, "Flag_Reopened_pct": 39.1, "Flag_AutoConfirmed_count": 32, "Flag_AutoConfirmed_pct": 69.6, "total_coaching": 75, "cases_with_flags": 39, "pct_with_flags": 84.8, "avg_days_customer": 50.3, "avg_days_sap": 35.1, "avg_days_total": 85.4, "pri_Very_High": 0, "pri_High": 27, "pri_Medium": 17, "pri_Low": 2, "error_cats": {"Customer / Partner Issue": 21, "SAP Product Issue": 12, "Others": 10, "Not Specified": 2, "SAP documentation Issue": 1}, "top_flag": "Auto-Confirmed", "top_flag_pct": 69.6, "top_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "second_flag": "Customer Delay", "second_flag_pct": 52.2, "second_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "Workstream": "Cash/Treasury"}, {"total_cases": 38, "Flag_HowToOrConsulting_count": 8, "Flag_HowToOrConsulting_pct": 21.1, "Flag_PriorityInflation_count": 1, "Flag_PriorityInflation_pct": 2.6, "Flag_CustomerDelay_count": 33, "Flag_CustomerDelay_pct": 86.8, "Flag_ComponentMismatch_count": 23, "Flag_ComponentMismatch_pct": 60.5, "Flag_Reopened_count": 7, "Flag_Reopened_pct": 18.4, "Flag_AutoConfirmed_count": 32, "Flag_AutoConfirmed_pct": 84.2, "total_coaching": 72, "cases_with_flags": 37, "pct_with_flags": 97.4, "avg_days_customer": 29.4, "avg_days_sap": 5.4, "avg_days_total": 34.8, "pri_Very_High": 3, "pri_High": 15, "pri_Medium": 13, "pri_Low": 7, "error_cats": {"Customer / Partner Issue": 25, "Others": 5, "SAP Product Issue": 4, "Not Specified": 2, "3rd Party Product Issue": 1, "Service Request": 1}, "top_flag": "Customer Delay", "top_flag_pct": 86.8, "top_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "second_flag": "Auto-Confirmed", "second_flag_pct": 84.2, "second_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "Workstream": "Integration"}, {"total_cases": 31, "Flag_HowToOrConsulting_count": 13, "Flag_HowToOrConsulting_pct": 41.9, "Flag_PriorityInflation_count": 6, "Flag_PriorityInflation_pct": 19.4, "Flag_CustomerDelay_count": 19, "Flag_CustomerDelay_pct": 61.3, "Flag_ComponentMismatch_count": 3, "Flag_ComponentMismatch_pct": 9.7, "Flag_Reopened_count": 2, "Flag_Reopened_pct": 6.5, "Flag_AutoConfirmed_count": 21, "Flag_AutoConfirmed_pct": 67.7, "total_coaching": 43, "cases_with_flags": 25, "pct_with_flags": 80.6, "avg_days_customer": 25.2, "avg_days_sap": 12.8, "avg_days_total": 38.0, "pri_Very_High": 0, "pri_High": 18, "pri_Medium": 8, "pri_Low": 5, "error_cats": {"Customer / Partner Issue": 25, "SAP Product Issue": 4, "Others": 2}, "top_flag": "Auto-Confirmed", "top_flag_pct": 67.7, "top_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "second_flag": "Customer Delay", "second_flag_pct": 61.3, "second_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "Workstream": "GRC"}, {"total_cases": 31, "Flag_HowToOrConsulting_count": 14, "Flag_HowToOrConsulting_pct": 45.2, "Flag_PriorityInflation_count": 2, "Flag_PriorityInflation_pct": 6.5, "Flag_CustomerDelay_count": 28, "Flag_CustomerDelay_pct": 90.3, "Flag_ComponentMismatch_count": 10, "Flag_ComponentMismatch_pct": 32.3, "Flag_Reopened_count": 8, "Flag_Reopened_pct": 25.8, "Flag_AutoConfirmed_count": 27, "Flag_AutoConfirmed_pct": 87.1, "total_coaching": 62, "cases_with_flags": 31, "pct_with_flags": 100.0, "avg_days_customer": 36.7, "avg_days_sap": 5.2, "avg_days_total": 41.8, "pri_Very_High": 0, "pri_High": 19, "pri_Medium": 11, "pri_Low": 1, "error_cats": {"Customer / Partner Issue": 18, "Others": 7, "SAP Product Issue": 6}, "top_flag": "Customer Delay", "top_flag_pct": 90.3, "top_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "second_flag": "Auto-Confirmed", "second_flag_pct": 87.1, "second_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "Workstream": "MDG"}, {"total_cases": 23, "Flag_HowToOrConsulting_count": 10, "Flag_HowToOrConsulting_pct": 43.5, "Flag_PriorityInflation_count": 3, "Flag_PriorityInflation_pct": 13.0, "Flag_CustomerDelay_count": 23, "Flag_CustomerDelay_pct": 100.0, "Flag_ComponentMismatch_count": 5, "Flag_ComponentMismatch_pct": 21.7, "Flag_Reopened_count": 2, "Flag_Reopened_pct": 8.7, "Flag_AutoConfirmed_count": 21, "Flag_AutoConfirmed_pct": 91.3, "total_coaching": 43, "cases_with_flags": 23, "pct_with_flags": 100.0, "avg_days_customer": 25.6, "avg_days_sap": 4.1, "avg_days_total": 29.7, "pri_Very_High": 0, "pri_High": 14, "pri_Medium": 9, "pri_Low": 0, "error_cats": {"Customer / Partner Issue": 17, "SAP Product Issue": 3, "Others": 2, "Not Specified": 1}, "top_flag": "Customer Delay", "top_flag_pct": 100.0, "top_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "second_flag": "Auto-Confirmed", "second_flag_pct": 91.3, "second_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "Workstream": "OTC"}, {"total_cases": 12, "Flag_HowToOrConsulting_count": 5, "Flag_HowToOrConsulting_pct": 41.7, "Flag_PriorityInflation_count": 0, "Flag_PriorityInflation_pct": 0.0, "Flag_CustomerDelay_count": 8, "Flag_CustomerDelay_pct": 66.7, "Flag_ComponentMismatch_count": 5, "Flag_ComponentMismatch_pct": 41.7, "Flag_Reopened_count": 4, "Flag_Reopened_pct": 33.3, "Flag_AutoConfirmed_count": 10, "Flag_AutoConfirmed_pct": 83.3, "total_coaching": 22, "cases_with_flags": 11, "pct_with_flags": 91.7, "avg_days_customer": 37.5, "avg_days_sap": 21.7, "avg_days_total": 59.3, "pri_Very_High": 0, "pri_High": 8, "pri_Medium": 3, "pri_Low": 1, "error_cats": {"Customer / Partner Issue": 10, "SAP Product Issue": 2}, "top_flag": "Auto-Confirmed", "top_flag_pct": 83.3, "top_flag_advice": "Always manually confirm after validating solution. Set 8-day reminders.", "second_flag": "Customer Delay", "second_flag_pct": 66.7, "second_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "Workstream": "EAM"}, {"total_cases": 1, "Flag_HowToOrConsulting_count": 1, "Flag_HowToOrConsulting_pct": 100.0, "Flag_PriorityInflation_count": 0, "Flag_PriorityInflation_pct": 0.0, "Flag_CustomerDelay_count": 1, "Flag_CustomerDelay_pct": 100.0, "Flag_ComponentMismatch_count": 0, "Flag_ComponentMismatch_pct": 0.0, "Flag_Reopened_count": 0, "Flag_Reopened_pct": 0.0, "Flag_AutoConfirmed_count": 1, "Flag_AutoConfirmed_pct": 100.0, "total_coaching": 2, "cases_with_flags": 1, "pct_with_flags": 100.0, "avg_days_customer": 55.4, "avg_days_sap": 15.1, "avg_days_total": 70.5, "pri_Very_High": 0, "pri_High": 0, "pri_Medium": 1, "pri_Low": 0, "error_cats": {"Customer / Partner Issue": 1}, "top_flag": "How-To / Consulting", "top_flag_pct": 100.0, "top_flag_advice": "Check SAP KBAs, Notes, forums BEFORE raising OSS. Use MaxAttention for knowledge transfer.", "second_flag": "Customer Delay", "second_flag_pct": 100.0, "second_flag_advice": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "Workstream": "Others"}];
+const FK=['Flag_HowToOrConsulting','Flag_PriorityInflation','Flag_CustomerDelay','Flag_ComponentMismatch','Flag_Reopened','Flag_AutoConfirmed'];
+const FL={'Flag_HowToOrConsulting':'How-To / Consulting','Flag_PriorityInflation':'Priority Inflation','Flag_CustomerDelay':'Customer Delay','Flag_ComponentMismatch':'Component Mismatch','Flag_Reopened':'Reopened','Flag_AutoConfirmed':'Auto-Confirmed'};
+const AD={
+'Flag_HowToOrConsulting':'🔍 <b>DO:</b> Check SAP KBAs, Notes, forums BEFORE raising OSS.<br><b>AVOID:</b> Raising OSS for questions answerable via documentation.',
+'Flag_PriorityInflation':'⚠️ <b>DO:</b> Follow SAP priority guidelines. High/Very High = Production down ONLY.<br><b>AVOID:</b> Inflating priority — delays critical cases, erodes SAP trust.',
+'Flag_CustomerDelay':'⏱️ <b>DO:</b> Respond within 2 business days. Pre-gather all logs, screenshots, system info.<br><b>AVOID:</b> Leaving cases unattended — inflates age, distorts KPIs.',
+'Flag_ComponentMismatch':'🎯 <b>DO:</b> Use SAP component finder tool. Validate component against error message.<br><b>AVOID:</b> Guessing components — adds 3–5 days via re-routing.',
+'Flag_Reopened':'🔄 <b>DO:</b> Validate fix in system before confirming. Test in QA/Dev. Document results.<br><b>AVOID:</b> Confirming without proper testing.',
+'Flag_AutoConfirmed':'🤖 <b>DO:</b> Always manually confirm after validating. Set 8-day reminders.<br><b>AVOID:</b> Letting cases auto-confirm — no feedback loop for SAP.'};
+const FDEFS=[{"key": "Flag_HowToOrConsulting", "label": "How-To / Consulting", "icon": "\ud83d\udd0d", "meaning": "Case was a how-to or consulting question rather than a genuine defect or incident.", "do": "Check SAP KBAs, Notes, forums BEFORE raising OSS. Use MaxAttention for knowledge transfer.", "avoid": "Raising OSS for questions answerable via documentation."}, {"key": "Flag_PriorityInflation", "label": "Priority Inflation", "icon": "\u26a0\ufe0f", "meaning": "Priority was set higher than the actual business impact warrants.", "do": "Follow SAP priority guidelines. High/Very High = Production down only.", "avoid": "Inflating priority \u2014 delays critical cases, erodes SAP trust."}, {"key": "Flag_CustomerDelay", "label": "Customer Delay", "icon": "\u23f1\ufe0f", "meaning": "Significant delay attributable to our side (late responses, missing info).", "do": "Respond within 2 business days. Pre-gather all logs, screenshots, system info. Assign dedicated owner.", "avoid": "Leaving cases unattended \u2014 inflates age, distorts KPIs."}, {"key": "Flag_ComponentMismatch", "label": "Component Mismatch", "icon": "\ud83c\udfaf", "meaning": "Case was raised against wrong SAP component, causing re-routing.", "do": "Use SAP component finder tool. Validate component against error message.", "avoid": "Guessing components \u2014 adds 3\u20135 days via re-routing."}, {"key": "Flag_Reopened", "label": "Reopened", "icon": "\ud83d\udd04", "meaning": "Case had to be reopened because the initial fix did not resolve the issue.", "do": "Validate fix in system before confirming. Test in QA/Dev. Document results.", "avoid": "Confirming without proper testing."}, {"key": "Flag_AutoConfirmed", "label": "Auto-Confirmed", "icon": "\ud83e\udd16", "meaning": "Case was auto-confirmed by SAP without manual validation from our side.", "do": "Always manually confirm after validating solution. Set 8-day reminders.", "avoid": "Letting cases auto-confirm \u2014 no feedback loop for SAP."}];
+
+function gc(p){if(p===0)return'#f0f4f0';const r=Math.min(255,180+Math.round(p*.75)),g=Math.max(60,220-Math.round(p*2)),b=Math.max(60,220-Math.round(p*2));return'rgb('+r+','+g+','+b+')';};
+function tc(p){return p>40?'#fff':'#2c3e50';};
+
+function donutSVG(vh,hi,med,lo){
+  const data=[
+    {label:'Very High',val:vh,color:'#c0392b'},
+    {label:'High',val:hi,color:'#e67e22'},
+    {label:'Medium',val:med,color:'#f1c40f'},
+    {label:'Low',val:lo,color:'#27ae60'}
+  ];
+  const total=vh+hi+med+lo;
+  if(total===0) return '<p style="color:#95a5a6;text-align:center">No priority data</p>';
+  const cx=120,cy=120,R=100,r=60;
+  let svg='<svg width="240" height="240" viewBox="0 0 240 240">';
+  let startAngle=-Math.PI/2;
+  data.forEach(s=>{
+    if(s.val===0) return;
+    const slice=s.val/total*2*Math.PI;
+    const endAngle=startAngle+slice;
+    const largeArc=slice>Math.PI?1:0;
+    const x1o=cx+R*Math.cos(startAngle),y1o=cy+R*Math.sin(startAngle);
+    const x2o=cx+R*Math.cos(endAngle),y2o=cy+R*Math.sin(endAngle);
+    const x1i=cx+r*Math.cos(endAngle),y1i=cy+r*Math.sin(endAngle);
+    const x2i=cx+r*Math.cos(startAngle),y2i=cy+r*Math.sin(startAngle);
+    svg+='<path d="M'+x1o+','+y1o+' A'+R+','+R+' 0 '+largeArc+' 1 '+x2o+','+y2o+' L'+x1i+','+y1i+' A'+r+','+r+' 0 '+largeArc+' 0 '+x2i+','+y2i+' Z" fill="'+s.color+'" stroke="#fff" stroke-width="2"><title>'+s.label+': '+s.val+' ('+Math.round(s.val/total*100)+'%)</title></path>';
+    startAngle=endAngle;
+  });
+  svg+='<text x="'+cx+'" y="'+(cy-6)+'" text-anchor="middle" font-size="28" font-weight="700" fill="#1a2a6c">'+total+'</text>';
+  svg+='<text x="'+cx+'" y="'+(cy+16)+'" text-anchor="middle" font-size="11" fill="#7f8c8d">Total Cases</text>';
+  svg+='</svg>';
+  let legend='<div class="donut-legend">';
+  data.forEach(s=>{
+    const pct=total?Math.round(s.val/total*100):0;
+    legend+='<div class="donut-legend-item"><div class="donut-legend-dot" style="background:'+s.color+'"></div><span><b>'+s.label+':</b> '+s.val+' ('+pct+'%)</span></div>';
+  });
+  legend+='</div>';
+  const vhPct=total?Math.round((vh+hi)/total*100):0;
+  return '<div class="donut-wrap">'+svg+legend+'<p style="font-size:.78em;color:#95a5a6;margin-top:4px">High + Very High = <b>'+vhPct+'%</b> of portfolio. Ensure these are genuinely production-critical.</p></div>';
+};
+
+function go(){
+const s=document.getElementById('wf').value,d=D.find(x=>x.Workstream===s);if(!d)return;
+document.getElementById('fi').textContent=s==='All Workstreams'?'Showing all workstreams':'Filtered: '+s;
+
+document.getElementById('kr').innerHTML=
+'<div class="kc"><div class="kv">'+d.total_cases+'</div><div class="kl">Total Cases</div></div>'+
+'<div class="kc w"><div class="kv">'+d.total_coaching+'</div><div class="kl">Coaching Flags</div></div>'+
+'<div class="kc w"><div class="kv">'+d.pct_with_flags+'%</div><div class="kl">Cases Flagged</div></div>'+
+'<div class="kc i"><div class="kv">'+d.avg_days_customer+'d</div><div class="kl">Avg Days @ Customer</div></div>'+
+'<div class="kc"><div class="kv">'+d.avg_days_sap+'d</div><div class="kl">Avg Days @ SAP</div></div>'+
+'<div class="kc s"><div class="kv" style="font-size:1em">'+d.top_flag+'</div><div class="kl">Top Coaching Issue</div></div>';
+
+let rows=s==='All Workstreams'?D:D.filter(x=>x.Workstream===s||x.Workstream==='All Workstreams');
+let h='<thead><tr><th class="wc">Workstream</th><th>Cases</th>';
+FK.forEach(f=>{h+='<th onclick="st(event,\''+f+'\')">'+FL[f]+'</th>';});
+h+='<th>Total Flags</th><th>% Flagged</th></tr></thead><tbody>';
+rows.forEach(r=>{
+const a=r.Workstream==='All Workstreams';
+h+='<tr class="'+(a?'ar':'')+'">';
+h+='<td class="ws">'+r.Workstream+'</td><td style="background:#f8f9fa;font-weight:600">'+r.total_cases+'</td>';
+FK.forEach(f=>{
+const cn=r[f+'_count']||0,cp=r[f+'_pct']||0,bg=gc(cp),tx=tc(cp);
+h+='<td style="background:'+bg+';color:'+tx+'" onclick="ct(event,\''+f+'\','+cn+','+cp+',\''+r.Workstream.replace(/'/g,"\\'")+'\')"><span class="cc">'+cn+'</span><span class="cp">'+cp+'%</span></td>';});
+h+='<td style="background:#f8f9fa;font-weight:700">'+r.total_coaching+'</td>';
+h+='<td style="background:'+gc(r.pct_with_flags)+';color:'+tc(r.pct_with_flags)+';font-weight:700">'+r.pct_with_flags+'%</td></tr>';});
+h+='</tbody>';document.getElementById('hm').innerHTML=h;
+
+let ft='<thead><tr><th style="width:40px">Icon</th><th>Flag</th><th>What It Means</th><th>✅ What To Do</th><th>❌ What To Avoid</th><th style="text-align:center">Count</th><th style="text-align:center">%</th></tr></thead><tbody>';
+FDEFS.forEach(fd=>{
+const cn=d[fd.key+'_count']||0, cp=d[fd.key+'_pct']||0;
+const bg=gc(cp),tx=tc(cp);
+ft+='<tr><td class="fi">'+fd.icon+'</td>';
+ft+='<td class="fc">'+fd.label+'</td>';
+ft+='<td>'+fd.meaning+'</td>';
+ft+='<td class="fdo">'+fd['do']+'</td>';
+ft+='<td class="fav">'+fd.avoid+'</td>';
+ft+='<td class="fstat" style="background:'+bg+';color:'+tx+';border-radius:5px">'+cn+'<div class="fstatp" style="color:'+tx+'">of '+d.total_cases+'</div></td>';
+ft+='<td class="fstat" style="background:'+bg+';color:'+tx+';border-radius:5px">'+cp+'%</td></tr>';});
+ft+='</tbody>';document.getElementById('flagTable').innerHTML=ft;
+
+let ec=d.error_cats||{},es=Object.entries(ec).sort((a,b)=>b[1]-a[1]);
+let e='<thead><tr><th>Error Category</th><th>Count</th><th>%</th></tr></thead><tbody>';
+es.forEach(([k,v])=>{e+='<tr><td>'+k+'</td><td><b>'+v+'</b></td><td>'+Math.round(v/d.total_cases*100)+'%</td></tr>';});
+e+='</tbody>';document.getElementById('et').innerHTML=e;
+
+document.getElementById('pd').innerHTML=donutSVG(d.pri_Very_High,d.pri_High,d.pri_Medium,d.pri_Low);
+
+let c='<div class="cb"><strong>For '+d.Workstream+':</strong><br>Your <strong>top coaching opportunity</strong> is <strong>'+d.top_flag+'</strong> at <strong>'+d.top_flag_pct+'%</strong> of cases.<br><em>'+d.top_flag_advice+'</em>';
+if(d.second_flag&&d.second_flag!=='N/A')c+='<br><br>Your <strong>second area</strong> is <strong>'+d.second_flag+'</strong> at <strong>'+d.second_flag_pct+'%</strong>.<br><em>'+d.second_flag_advice+'</em>';
+c+='</div>';document.getElementById('cs').innerHTML=c;
+};
+
+function st(e,f){const t=document.getElementById('tp');t.innerHTML='<b>'+FL[f]+'</b><br><br>'+AD[f];t.style.display='block';t.style.left=Math.min(e.pageX-140,window.innerWidth-360)+'px';t.style.top=(e.pageY+18)+'px';setTimeout(()=>{t.style.display='none'},6000);};
+function ct(e,f,cn,cp,ws){const t=document.getElementById('tp');t.innerHTML='<b>'+ws+'</b> — '+FL[f]+'<br>Count: <b>'+cn+'</b> ('+cp+'%)<br><br>'+AD[f];t.style.display='block';t.style.left=Math.min(e.pageX-140,window.innerWidth-360)+'px';t.style.top=(e.pageY+18)+'px';setTimeout(()=>{t.style.display='none'},8000);};
+document.addEventListener('click',function(e){if(!e.target.closest('.ht')&&!e.target.closest('.tt'))document.getElementById('tp').style.display='none';});
+go();
+</script></body></html>
