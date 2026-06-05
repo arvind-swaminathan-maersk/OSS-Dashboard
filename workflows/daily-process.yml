@@ -1,21 +1,21 @@
-name: Daily Data Processing & Dashboard Update
+name: Continuous Data Processing & Dashboard Update
 
 on:
+  # Watch Data folder for new Excel files
+  push:
+    paths:
+      - 'Data/*.xlsx'
+      - 'Data/*.xls'
+  
+  # Daily trigger as fallback
   schedule:
-    # Run daily at 2 AM UTC (adjust as needed)
     - cron: '0 2 * * *'
   
   # Allow manual trigger
   workflow_dispatch:
-  
-  # Trigger when data files are pushed
-  push:
-    paths:
-      - 'Data/**/*.xlsx'
-      - 'Data/**/*.csv'
 
 jobs:
-  process-and-build:
+  auto-process:
     runs-on: ubuntu-latest
     
     steps:
@@ -30,11 +30,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas openpyxl
+          pip install pandas openpyxl watchdog
       
-      - name: Process data and update historical records
+      - name: Detect and process new Excel files
         run: |
-          python process_data.py
+          python watch_and_process.py --single-run
       
       - name: Build dashboard
         run: |
@@ -52,16 +52,17 @@ jobs:
           if git diff --quiet --cached; then
             echo "No changes to commit"
           else
-            git commit -m "chore: auto-update insights and dashboard [skip ci]"
+            git commit -m "chore: auto-process new data and update dashboard [skip ci]"
             git push
           fi
       
-      - name: Upload artifacts
+      - name: Upload logs and output
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: dashboard-output
+          name: processing-output
           path: |
             output/
             Data/process.log
-          retention-days: 7
+            Data/processed/
+          retention-days: 30
