@@ -1,0 +1,67 @@
+name: Daily Data Processing & Dashboard Update
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC (adjust as needed)
+    - cron: '0 2 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+  
+  # Trigger when data files are pushed
+  push:
+    paths:
+      - 'Data/**/*.xlsx'
+      - 'Data/**/*.csv'
+
+jobs:
+  process-and-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas openpyxl
+      
+      - name: Process data and update historical records
+        run: |
+          python process_data.py
+      
+      - name: Build dashboard
+        run: |
+          python build_dashboard.py
+      
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Add generated files
+          git add -A
+          
+          # Only commit if there are changes
+          if git diff --quiet --cached; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: auto-update insights and dashboard [skip ci]"
+            git push
+          fi
+      
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-output
+          path: |
+            output/
+            Data/process.log
+          retention-days: 7
